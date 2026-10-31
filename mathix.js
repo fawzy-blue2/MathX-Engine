@@ -303,7 +303,7 @@ export class Real extends Rational {
         no = number;
         i++;
         no = no ** i;
-        no = +no.toFixed(13);
+        no = +no.toFixed(12);
       }
       if (Rational.isRational(no)) {
         let num = new Rational(no);
@@ -430,185 +430,156 @@ export class Complex extends Real {
   }
 }
 
-export class Matrix {
-  static #arrays;
-  static #rows;
-  static #columns;
-  constructor(rows, columns, ...values) {
-    Matrix.#arrays = values;
-    Matrix.#rows = rows;
-    Matrix.#columns = columns;
-    this.system = {
-      rows: rows,
-      columns: columns,
-      value: `${rows}x${columns}`,
-    };
-    this.value = Matrix.#createMatrix();
-    this.determinant = Matrix.#getDeterminant();
-  }
-  static #createMatrix() {
-    if (Matrix.#rows === Matrix.#arrays.length) {
-      let matrix = {};
-      for (let i = 0; i < Matrix.#rows; i++) {
-        if (Matrix.#arrays[i].length !== Matrix.#columns) {
-          return undefined;
-        } else {
-          Object.defineProperty(matrix, `r${i + 1}`, {
-            writable: true,
-            enumerable: true,
-            value: {},
-          });
-          for (let j = 0; j < Matrix.#columns; j++) {
-            Object.defineProperty(matrix[`r${i + 1}`], `c${j + 1}`, {
-              enumerable: true,
-              value: this.#arrays[i][j],
-            });
-          }
-        }
-      }
-      return matrix;
-    } else {
-      return undefined;
-    }
-  }
-  static #getDeterminant() {
-    if (Matrix.#rows === Matrix.#columns) {
-      return "hi";
-    } else {
-      return undefined;
-    }
-  }
-  static add(...matrices) {
-    if (
-      matrices.every(function (e, i, arr) {
-        if (i === arr.length - 1) {
-          return true;
-        } else {
-          return arr[i].system.value === arr[i + 1].system.value;
-        }
-      })
-    ) {
-      let value = {};
-      for (let i in matrices[0].value) {
-        Object.defineProperty(value, i, {
-          writable: true,
-          enumerable: true,
-          value: {},
-        });
-        for (let j in matrices[0].value[i]) {
-          let c = matrices.reduce((a, b) => {
-            return a.value[i][j] + b.value[i][j];
-          });
-          Object.defineProperty(value[i], j, {
-            enumerable: true,
-            value: c,
-          });
-        }
-      }
-      return value;
-    } else {
-      return undefined;
-    }
-  }
-  static subtract(...matrices) {
-    if (
-      matrices.every(function (e, i, arr) {
-        if (i === arr.length - 1) {
-          return true;
-        } else {
-          return e.system.value === arr[i + 1].system.value;
-        }
-      })
-    ) {
-      let value = {};
-      for (let i in matrices[0].value) {
-        Object.defineProperty(value, i, {
-          writable: true,
-          enumerable: true,
-          value: {},
-        });
-        for (let j in matrices[0].value[i]) {
-          let c = matrices.reduce((a, b) => {
-            return a.value[i][j] - b.value[i][j];
-          });
-          Object.defineProperty(value[i], j, {
-            enumerable: true,
-            value: c,
-          });
-        }
-      }
-      return value;
-    } else {
-      return undefined;
-    }
-  }
-  static multiply(matrix1, matrix2) {
-    if (
-      matrix1.system.columns === matrix2.system.rows ||
-      matrix1.system.rows === matrix2.system.columns
-    ) {
-      let rm = matrix2;
-      let cm = matrix1;
-      let value = {};
-      if (matrix1.system.columns === matrix2.system.rows) {
-        for (let i = 1; i <= cm.system.rows; i++) {
-          Object.defineProperty(value, `r${i}`, {
-            writable: true,
-            enumerable: true,
-            value: {},
-          });
-          for (let j = 1; j <= rm.system.columns; j++) {
-            let result = 0;
-            for (let k = 1; k <= rm.system.rows; k++) {
-              result += cm.value[`r${i}`][`c${k}`] * rm.value[`r${k}`][`c${j}`];
-            }
-            Object.defineProperty(value[`r${i}`], `c${j}`, {
-              enumerable: true,
-              value: result,
-            });
-          }
-        }
-      } else {
-        for (let i = 1; i <= rm.system.rows; i++) {
-          for (let j = 1; j <= cm.system.columns; j++) {
-            let result = 0;
-            if (value[`r${j}`] === undefined) {
-              Object.defineProperty(value, `r${j}`, {
-                writable: true,
-                enumerable: true,
-                value: {},
-              });
-            }
-            for (let k = 1; k <= cm.system.rows; k++) {
-              result += cm.value[`r${k}`][`c${j}`] * rm.value[`r${i}`][`c${k}`];
-            }
-            Object.defineProperty(value[`r${j}`], `c${i}`, {
-              enumerable: true,
-              value: result,
-            });
-          }
-        }
-      }
-      return value;
-    } else {
-      return undefined;
-    }
-  }
-  transpose() {
-    let rows = [];
-    for (let i in this.value.r1) {
-      let r = [];
-      for (let j in this.value) {
-        r.push(this.value[j][i]);
-      }
-      rows.push(r);
-    }
-    return new Matrix(
-      Object.values(this.value.r1).length,
-      Object.values(this.value).length,
-      ...rows,
-    );
+function fixAproxError(value) {
+  let diff = Math.round(value) - value;
+  if (((diff > (-10e-10 )) && (diff < 0)) || ((diff < (10e-10)) && (diff > 0))) {
+    return Math.round(value);
+  } else {
+    return value;
   }
 }
 
-console.log(new Matrix(2, 3, [1, 2, 3], [4, 5, 6]).transpose());
+export function analyzeSqrt(x) {
+  function getFactor() {
+    if (x.value.imaginary == 0) {
+      let factor = x.term;
+      let root = 1;
+      if (x.term.includes("√")) {
+        factor = x.term.slice(0, x.term.indexOf("√"));
+        root = +x.term.slice(x.term.indexOf("√") + 1);
+      }
+      let numer = 0;
+      let denom = 1;
+      if (factor) {
+        if (factor.includes("/")) {
+          numer = +factor.slice(0, factor.indexOf("/"));
+          denom = +factor.slice(factor.indexOf("/") + 1);
+        } else {
+          numer = +factor;
+          denom = 1;
+        }
+      } else {
+        denom = 1;
+        numer = 1;
+        factor = 1;
+      }
+      return {
+        factor: factor,
+        numerator: numer,
+        denominator: denom,
+        underRoot: root,
+      };
+    }
+  }
+  return getFactor();
+}
+
+export class Angle {
+  constructor(value) {
+    this.value = value;
+    this.unit = "radian";
+  }
+  toDegree() {
+    if (this.unit == "radian") {
+      let deg = (this.value * 180) / Real.PI
+      this.value = fixAproxError(deg);
+      this.unit = "degree";
+    } else {
+      this.value = this.value;
+      this.unit = this.unit;
+    }
+  }
+  toRadian() {
+    if (this.unit == "degree") {
+      let rad = (Real.PI * this.value) / 180
+      this.value = rad;
+      this.unit = "radian";
+    } else {
+      this.value = this.value;
+      this.unit = this.unit;
+    }
+  }
+}
+
+export class Functions {
+  static sin(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.sin(x.value));
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.sin(val.value))
+    }
+    return result
+  }
+  static cos(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.cos(x.value));
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.cos(val.value))
+    }
+    return result
+  }
+  static tan(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.tan(x.value));
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.tan(val.value))
+    }
+    return result
+  }
+  static sec(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.cos(x.value) ** -1);
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.cos(val.value) ** -1)
+    }
+    return result
+  }
+  static csc(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.sin(x.value) ** -1);
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.sin(val.value) ** -1)
+    }
+    return result
+  }
+  static cot(x) {
+    let result = undefined;
+    if (x.unit == "radian") {
+      result = new Real(Math.tan(x.value) ** -1);
+    } else {
+      let val = x.toRadian()
+      result = new Real(Math.tan(val.value) ** -1)
+    }
+    return result
+  }
+}
+
+// let angle = new Angle(Real.PI / 6);
+
+// console.log(Functions.sin(angle))
+// console.log(Functions.cos(angle))
+// console.log(Functions.tan(angle))
+// console.log(Functions.sec(angle))
+// console.log(Functions.csc(angle))
+// console.log(Functions.cot(angle))
+
+// let num1 = new Real(Math.sqrt(3) / 3)
+// console.log(num1)
+// let num2 = new Real(Math.sqrt(4) / 4)
+// console.log(num2)
+// let num3 = new Real(Math.sqrt(5) / 5)
+// console.log(num3)
+// let num4 = new Real(Math.sqrt(6) / 6)
+// console.log(num4)
+
+console.log(((Math.sqrt(5)/5)**2).toFixed(13))
