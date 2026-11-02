@@ -278,10 +278,12 @@ export class Real extends Rational {
       }
       if (term !== undefined) {
         return term;
-      } else if (Real.#termRoot(number) !== undefined) {
-        return Real.#termRoot(number);
       } else {
-        return `${number.toFixed(5)}`;
+        if (Real.#termRoot(number) !== undefined) {
+          return Real.#termRoot(number);
+        } else {
+          return `${number.toFixed(5)}`;
+        }
       }
     }
   }
@@ -297,7 +299,7 @@ export class Real extends Rational {
       let no = number;
       let i = 0;
       while (!Rational.isRational(no)) {
-        if (no > -0.001 && no < 0.001) {
+        if (no > -0.0001 && no < 0.0001) {
           break;
         }
         no = number;
@@ -312,12 +314,18 @@ export class Real extends Rational {
         if (num.fraction.value.includes("/")) {
           for (
             ;
-            !Integer.isInteger(num.fraction.denominator / k ** i) && k > 0;
+            !Integer.isInteger(
+              fixAproxError(num.fraction.denominator / k ** i),
+            ) && k > 0;
           ) {
             k--;
             outD = k;
-            if (Integer.isInteger(num.fraction.denominator / k ** i)) {
-              denom = num.fraction.denominator / k ** i;
+            if (
+              Integer.isInteger(
+                fixAproxError(num.fraction.denominator / k ** i),
+              )
+            ) {
+              denom = fixAproxError(num.fraction.denominator / k ** i);
               break;
             }
           }
@@ -326,13 +334,27 @@ export class Real extends Rational {
           k = 1;
           outD = 1;
         }
-        for (; !Integer.isInteger(num.fraction.numerator / j ** i) && j > 0; ) {
-          j--;
-          outN = j;
-          if (Integer.isInteger(num.fraction.numerator / j ** i)) {
-            numer = num.fraction.numerator / j ** i;
-            break;
+        if (
+          Integer.isInteger(fixAproxError(Math.sqrt(num.fraction.denominator)))
+        ) {
+          for (
+            ;
+            !Integer.isInteger(
+              fixAproxError(num.fraction.numerator / j ** i),
+            ) && j > 0;
+          ) {
+            j--;
+            outN = j;
+            if (
+              Integer.isInteger(fixAproxError(num.fraction.numerator / j ** i))
+            ) {
+              numer = fixAproxError(num.fraction.numerator / j ** i);
+              break;
+            }
           }
+        } else {
+          outN = Math.sqrt(num.fraction.numerator);
+          numer = 1;
         }
         no = Rational.toFraction(no);
         outD *= denom;
@@ -432,7 +454,7 @@ export class Complex extends Real {
 
 function fixAproxError(value) {
   let diff = Math.round(value) - value;
-  if (((diff > (-10e-10 )) && (diff < 0)) || ((diff < (10e-10)) && (diff > 0))) {
+  if ((diff > -10e-10 && diff < 0) || (diff < 10e-10 && diff > 0)) {
     return Math.round(value);
   } else {
     return value;
@@ -481,7 +503,7 @@ export class Angle {
   }
   toDegree() {
     if (this.unit == "radian") {
-      let deg = (this.value * 180) / Real.PI
+      let deg = (this.value * 180) / Real.PI;
       this.value = fixAproxError(deg);
       this.unit = "degree";
     } else {
@@ -491,7 +513,7 @@ export class Angle {
   }
   toRadian() {
     if (this.unit == "degree") {
-      let rad = (Real.PI * this.value) / 180
+      let rad = (Real.PI * this.value) / 180;
       this.value = rad;
       this.unit = "radian";
     } else {
@@ -507,79 +529,71 @@ export class Functions {
     if (x.unit == "radian") {
       result = new Real(Math.sin(x.value));
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.sin(val.value))
+      let val = x.toRadian();
+      result = new Real(Math.sin(val.value));
     }
-    return result
+    return result;
   }
   static cos(x) {
     let result = undefined;
     if (x.unit == "radian") {
       result = new Real(Math.cos(x.value));
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.cos(val.value))
+      let val = x.toRadian();
+      result = new Real(Math.cos(val.value));
     }
-    return result
+    return result;
   }
   static tan(x) {
     let result = undefined;
     if (x.unit == "radian") {
       result = new Real(Math.tan(x.value));
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.tan(val.value))
+      let val = x.toRadian();
+      result = new Real(Math.tan(val.value));
     }
-    return result
+    return result;
   }
   static sec(x) {
     let result = undefined;
     if (x.unit == "radian") {
       result = new Real(Math.cos(x.value) ** -1);
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.cos(val.value) ** -1)
+      let val = x.toRadian();
+      result = new Real(Math.cos(val.value) ** -1);
     }
-    return result
+    return result;
   }
   static csc(x) {
     let result = undefined;
     if (x.unit == "radian") {
       result = new Real(Math.sin(x.value) ** -1);
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.sin(val.value) ** -1)
+      let val = x.toRadian();
+      result = new Real(Math.sin(val.value) ** -1);
     }
-    return result
+    return result;
   }
   static cot(x) {
     let result = undefined;
     if (x.unit == "radian") {
       result = new Real(Math.tan(x.value) ** -1);
     } else {
-      let val = x.toRadian()
-      result = new Real(Math.tan(val.value) ** -1)
+      let val = x.toRadian();
+      result = new Real(Math.tan(val.value) ** -1);
     }
-    return result
+    return result;
   }
 }
 
-// let angle = new Angle(Real.PI / 6);
+let angle = new Angle(Real.PI / 7);
 
-// console.log(Functions.sin(angle))
+console.log(Functions.sin(angle))
 // console.log(Functions.cos(angle))
 // console.log(Functions.tan(angle))
 // console.log(Functions.sec(angle))
 // console.log(Functions.csc(angle))
 // console.log(Functions.cot(angle))
 
-// let num1 = new Real(Math.sqrt(3) / 3)
-// console.log(num1)
-// let num2 = new Real(Math.sqrt(4) / 4)
-// console.log(num2)
-// let num3 = new Real(Math.sqrt(5) / 5)
-// console.log(num3)
-// let num4 = new Real(Math.sqrt(6) / 6)
-// console.log(num4)
-
-console.log(((Math.sqrt(5)/5)**2).toFixed(13))
+let num = Real.checkTerm(Math.cos(Math.PI / 7));
+console.log(num);
