@@ -1,4 +1,4 @@
-import Rational from "../NumberSets/Rational";
+import Rational from "../NumberSets/Rational.js";
 
 function isInteger(number) {
   return Number.isInteger(number);

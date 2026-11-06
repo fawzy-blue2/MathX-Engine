@@ -1,3 +1,5 @@
+import { fixAproxError } from "../Utils/FixErrors.js";
+
 export default class Integer {
   constructor(integer) {
     // لكل قيمة جزئين تخيلي و حقيقي بالنسبة للاعداد الحقيقية الجزء التخيلي دائما يساوي الصفر

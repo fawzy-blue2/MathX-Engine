@@ -1,4 +1,4 @@
-import Real from "./Real";
+import Real from "./Real.js";
 
 export default class Complex extends Real {
   constructor(real, imaginary) {

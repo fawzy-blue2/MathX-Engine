@@ -1,16 +1,16 @@
 // Number Sets
-import Integer from "./NumberSets/Integer";
-import Rational from "./NumberSets/Rational";
-import Real from "./NumberSets/Real";
-import Complex from "./NumberSets/Complex";
-import Angle from "./NumberSets/Angle";
+import Integer from "./NumberSets/Integer.js";
+import Rational from "./NumberSets/Rational.js";
+import Real from "./NumberSets/Real.js";
+import Complex from "./NumberSets/Complex.js";
+import Angle from "./NumberSets/Angle.js";
 
 // Functions
-import TrigonometricFunctions from "./Functions/TrigonomertocFunctions";
+import TrigonometricFunctions from "./Functions/TrigonomertocFunctions.js";
 
 // utils
-import Constants from "./Utils/Constants";
-import Symbols from "./Utils/Symbols";
-import * as Analyzers from "./Utils/Analyzers";
-import * as Fixers from "./Utils/FixErrors";
-import * as Validators from "./Utils/Validators";
+import Constants from "./Utils/Constants.js";
+import Symbols from "./Utils/Symbols.js";
+import * as Analyzers from "./Utils/Analyzers.js";
+import * as Fixers from "./Utils/FixErrors.js";
+import * as Validators from "./Utils/Validators.js";

@@ -1,4 +1,4 @@
-export default symbol = {
+export default {
   alpha: "α",
   Alpha: "Α",
   beta: "ᵦ",

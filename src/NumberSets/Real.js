@@ -1,13 +1,13 @@
-import Rational from "./Rational";
-import Integer from "./Integer";
-import { fixAproxError } from "../Utils/FixErrors";
-import Constants from "../Utils/Constants";
-import Symbols from "../Utils/Symbols";
+import Rational from "./Rational.js";
+import Integer from "./Integer.js";
+import { fixAproxError } from "../Utils/FixErrors.js";
+import Constants from "../Utils/Constants.js";
+import Symbols from "../Utils/Symbols.js";
 
 export default class Real extends Rational {
   constructor(real) {
     super(real);
-    this.value.real = fixAproxError(real);
+    this.value.real = fixAproxError(+real.toFixed(12));
     this.term = Real.checkTerm(this.value.real);
   }
   static #term(number, constant, symbol) {

@@ -1,23 +1,31 @@
 {
-  "name": "mathix",
+  "name": "mathix-engine",
   "version": "1.0.0",
-  "description": "amazing mathematical engine library for educational and semi-advanced usage",
-  "homepage": "https://github.com/abdo-mohamed-fawzy-coding/mathX#readme",
-  "bugs": {
-    "url": "https://github.com/abdo-mohamed-fawzy-coding/mathX/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abdo-mohamed-fawzy-coding/mathX.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "ISC",
-  "author": "abdo_blue2",
+  "description": "A JavaScript mathematical engine library",
   "type": "module",
-  "main": "index.js",
+  "main": "./dist/mathix.umd.cjs",
+  "module": "./dist/mathix.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mathix.js",
+      "require": "./dist/mathix.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "vite build"
+  },
+  "keywords": [
+    "math",
+    "mathematics",
+    "algebra",
+    "numbers"
+  ],
+  "author": "fawzy-blue2",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
   }
 }

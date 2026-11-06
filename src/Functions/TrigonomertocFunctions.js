@@ -1,4 +1,6 @@
-import Real from "../NumberSets/Real";
+import Real from "../NumberSets/Real.js";
+import { fixAproxError } from "../Utils/FixErrors.js";
+import Constants from "../Utils/Constants.js";
 
 export default class TrigonometricFunctions {
   static sin(x) {
@@ -13,23 +15,19 @@ export default class TrigonometricFunctions {
   }
   static cos(x) {
     let result = undefined;
-    if (x.unit == "radian") {
-      result = new Real(fixAproxError(Math.cos(x.value)));
-    } else {
-      let val = x.toRadian();
-      result = new Real(fixAproxError(Math.cos(val.value)));
-    }
+    let ang = x
+    ang.toRadian()
+    let r = ang.value;
+    result = new Real(fixAproxError(Math.cos(r)));
     return result;
   }
   static tan(x) {
     let result = undefined;
-    if (x.value % (Real.PI / 2) !== 0 && x.value % ((3 * Real.PI) / 2) !== 0) {
-      if (x.unit == "radian") {
-        result = new Real(fixAproxError(Math.tan(x.value)));
-      } else {
-        let val = x.toRadian();
-        result = new Real(fixAproxError(Math.tan(val.value)));
-      }
+    let ang = x
+    ang.toRadian()
+    let r = ang.value;
+    if (r % (2 * Constants.pi) !== Constants.pi / 2 && r % ((2 * Constants.pi)) !== 3 * Constants.pi / 2) {
+      result = new Real(fixAproxError(Math.tan(r)));
     } else {
       result = undefined;
     }

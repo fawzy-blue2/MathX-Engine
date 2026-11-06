@@ -1,10 +1,11 @@
-import Integer from "./Integer";
+import Integer from "./Integer.js";
+import { fixAproxError } from "../Utils/FixErrors.js";
 
 export default class Rational extends Integer {
   constructor(rational) {
     super(rational);
-    this.value.real = Rational.isRational(fixAproxError(rational))
-      ? fixAproxError(rational)
+    this.value.real = Rational.isRational(+fixAproxError(+rational.toFixed(12)))
+      ? fixAproxError(+rational.toFixed(12))
       : undefined;
     this.fraction = Rational.isRational(rational)
       ? {
