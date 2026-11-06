@@ -1,0 +1,15 @@
+export default symbol = {
+  alpha: "α",
+  Alpha: "Α",
+  beta: "ᵦ",
+  Beta: "Β",
+  gamma: "γ",
+  Gamma: "Γ",
+  delta: "δ",
+  Delta: "Δ",
+  omega: "ω",
+  Omega: "Ω",
+  pi: "π",
+  Pi: "Π",
+  e: "e",
+};
