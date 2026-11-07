@@ -1,4 +1,6 @@
-import { fixAproxError } from "../Utils/FixErrors.js";
+import FixErrors from "../Utils/FixErrors.js";
+
+let fixAproxError = FixErrors.fixAproxError
 
 export default class Integer {
   constructor(integer) {

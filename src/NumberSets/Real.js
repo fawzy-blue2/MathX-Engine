@@ -1,8 +1,10 @@
 import Rational from "./Rational.js";
 import Integer from "./Integer.js";
-import { fixAproxError } from "../Utils/FixErrors.js";
+import FixErrors from "../Utils/FixErrors.js";
 import Constants from "../Utils/Constants.js";
 import Symbols from "../Utils/Symbols.js";
+
+let fixAproxError = FixErrors.fixAproxError
 
 export default class Real extends Rational {
   constructor(real) {

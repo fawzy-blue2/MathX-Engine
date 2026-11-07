@@ -1,5 +1,7 @@
 import Integer from "./Integer.js";
-import { fixAproxError } from "../Utils/FixErrors.js";
+import FixErrors from "../Utils/FixErrors.js";
+
+let fixAproxError = FixErrors.fixAproxError
 
 export default class Rational extends Integer {
   constructor(rational) {

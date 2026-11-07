@@ -1,6 +1,8 @@
 import Real from "../NumberSets/Real.js";
-import { fixAproxError } from "../Utils/FixErrors.js";
 import Constants from "../Utils/Constants.js";
+import FixErrors from "../Utils/FixErrors.js";
+
+let fixAproxError = FixErrors.fixAproxError
 
 export default class TrigonometricFunctions {
   static sin(x) {

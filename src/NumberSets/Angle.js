@@ -1,5 +1,7 @@
-import { fixAproxError } from "../Utils/FixErrors.js";
 import Constants from "../Utils/Constants.js";
+import FixErrors from "../Utils/FixErrors.js";
+
+let fixAproxError = FixErrors.fixAproxError
 
 export default class Angle {
   constructor(value) {

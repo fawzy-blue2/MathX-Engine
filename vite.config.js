@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.js'),
-      name: 'Mathix',
+      name: '@fawzy-blue2/mathix-engine',
       fileName: 'mathix',
     },
     rollupOptions: {
