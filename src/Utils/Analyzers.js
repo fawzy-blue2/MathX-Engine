@@ -1,6 +1,7 @@
+import Symbols from "./Symbols.js";
 
 export default {
-  analyzeSqrt: function(x) {
+  analyzeSqrt: function (x) {
     function getFactor() {
       if (x.value.imaginary == 0) {
         let factor = x.term;
@@ -33,5 +34,43 @@ export default {
       }
     }
     return getFactor();
-  }
-}
+  },
+  analyzePi: function (x) {
+    let value = x.term;
+    let pi = false;
+    let numer;
+    let denom;
+    let factor;
+    if (value.includes(Symbols.pi)) {
+      pi = true;
+      numer = value.slice(0, value.indexOf(Symbols.pi))
+      if (!numer) {
+        numer = 1;
+      }
+      if (value.includes("/")) {
+        denom = value.slice(value.indexOf("/") + 1)
+      } else {
+        denom = 1
+      }
+    } else {
+      if (value.includes("/")) {
+        numer = value.slice(0, value.indexOf("/"))
+        denom = value.slice(value.indexOf("/") + 1)
+      } else {
+        numer = +value
+        denom = 1
+      }
+    };
+    if (denom == 1) {
+      factor = `${numer}`
+    } else {
+      factor = `${numer}/${denom}`
+    }
+    return {
+      factor: factor,
+      numerator: numer,
+      denominator: denom,
+      pi: pi
+    }
+  },
+};
