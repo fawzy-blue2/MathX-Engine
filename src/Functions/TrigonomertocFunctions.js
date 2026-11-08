@@ -7,18 +7,15 @@ let fixAproxError = FixErrors.fixAproxError
 export default class TrigonometricFunctions {
   static sin(x) {
     let result = undefined;
-    if (x.unit == "radian") {
-      result = new Real(fixAproxError(Math.sin(x.value)));
-    } else {
-      let val = x.toRadian();
-      result = new Real(fixAproxError(Math.sin(val.value)));
-    }
+    let ang = x;
+    ang.toRadian();
+    result = new Real(fixAproxError(Math.sin(ang.value)));
     return result;
   }
   static cos(x) {
     let result = undefined;
     let ang = x
-    ang.toRadian()
+    ang.toRadian();
     let r = ang.value;
     result = new Real(fixAproxError(Math.cos(r)));
     return result;

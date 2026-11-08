@@ -3,11 +3,11 @@ import Symbols from "./Symbols.js";
 export default {
   analyzeSqrt: function (x) {
     function getFactor() {
-      let factor = x.term;
+      let factor = x;
       let root = 1;
-      if (x.term.includes("√")) {
-        factor = x.term.slice(0, x.term.indexOf("√"));
-        root = +x.term.slice(x.term.indexOf("√") + 1);
+      if (x.includes("√")) {
+        factor = x.slice(0, x.indexOf("√"));
+        root = +x.slice(x.indexOf("√") + 1);
       }
       let numer = 0;
       let denom = 1;
