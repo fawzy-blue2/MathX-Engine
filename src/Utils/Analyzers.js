@@ -43,19 +43,19 @@ export default {
     let factor;
     if (value.includes(Symbols.pi)) {
       pi = true;
-      numer = value.slice(0, value.indexOf(Symbols.pi))
+      numer = +value.slice(0, value.indexOf(Symbols.pi))
       if (!numer) {
         numer = 1;
       }
       if (value.includes("/")) {
-        denom = value.slice(value.indexOf("/") + 1)
+        denom = +value.slice(value.indexOf("/") + 1)
       } else {
         denom = 1
       }
     } else {
       if (value.includes("/")) {
-        numer = value.slice(0, value.indexOf("/"))
-        denom = value.slice(value.indexOf("/") + 1)
+        numer = +value.slice(0, value.indexOf("/"))
+        denom = +value.slice(value.indexOf("/") + 1)
       } else {
         numer = +value
         denom = 1
