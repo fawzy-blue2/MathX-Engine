@@ -4,7 +4,7 @@ import FixErrors from "../Utils/FixErrors.js";
 import Constants from "../Utils/Constants.js";
 import Symbols from "../Utils/Symbols.js";
 
-let fixAproxError = FixErrors.fixAproxError
+let fixAproxError = FixErrors.fixAproxError;
 
 export default class Real extends Rational {
   constructor(real) {
@@ -25,7 +25,9 @@ export default class Real extends Rational {
         if (
           no.toString().startsWith("0.00") ||
           no.toString().startsWith("-0.00") ||
-          Rational.isRational(no)
+          Rational.isRational(no) ||
+          i >= 50 ||
+          Math.abs(no) < 1e-12
         ) {
           break;
         }
@@ -58,24 +60,29 @@ export default class Real extends Rational {
   static checkTerm(number) {
     if (Rational.isRational(number)) {
       return Real.toFraction(number);
-    } else {
-      let keys = ["e", "pi"];
-      let term;
+    }
 
-      for (let i = 0; i < keys.length; i++) {
-        term = Real.#term(number, Constants[keys[i]], Symbols[keys[i]]);
-        if (term !== undefined) {
-          break;
-        }
-      }
+    const abs = Math.abs(number);
+    if (abs > 0 && abs < 1 && !Number.isInteger(number)) {
+      return `${number.toFixed(5)}`;
+    }
+
+    let keys = ["e", "pi"];
+    let term;
+
+    for (let i = 0; i < keys.length; i++) {
+      term = Real.#term(number, Constants[keys[i]], Symbols[keys[i]]);
       if (term !== undefined) {
-        return term;
+        break;
+      }
+    }
+    if (term !== undefined) {
+      return term;
+    } else {
+      if (Real.#termRoot(number) !== undefined) {
+        return Real.#termRoot(number);
       } else {
-        if (Real.#termRoot(number) !== undefined) {
-          return Real.#termRoot(number);
-        } else {
-          return `${number.toFixed(5)}`;
-        }
+        return `${number.toFixed(5)}`;
       }
     }
   }
@@ -89,17 +96,12 @@ export default class Real extends Rational {
       value = number;
     } else {
       let no = number;
-      let i = 0;
-      while (!Rational.isRational(no)) {
-        if ((no > -0.001 && no < 0.001) || i === 11) {
+      let i = 1;
+      for (; i <= 11; i++) {
+        no = fixAproxError(no ** i);
+        if (Rational.isRational(no) || (no > -0.001 && no < 0.001)) {
           break;
         }
-        no = number;
-        // if (i === 11) {
-        //   break;
-        // }
-        i++;
-        no = fixAproxError(no ** i);
       }
       if (Rational.isRational(no)) {
         let num = new Rational(no);

@@ -61,17 +61,22 @@ export default class Rational extends Integer {
             rep5 = decimals.slice(4 * j - 3 * i, 5 * j - 4 * i);
             rep6 = decimals.slice(5 * j - 4 * i, 6 * j - 5 * i);
             rep7 = decimals.slice(6 * j - 5 * i, 7 * j - 6 * i);
-            if (rep3.length === 0) {
+            if (rep3.length === 0 && rep.length > rep2.length) {
               break;
-            } else if (rep.length > rep3.length) {
+            }
+            if (rep.length > rep3.length) {
               rep3 = rep;
-            } else if (rep.length > rep4.length) {
+            }
+            if (rep.length > rep4.length) {
               rep4 = rep;
-            } else if (rep.length > rep5.length) {
+            }
+            if (rep.length > rep5.length) {
               rep5 = rep;
-            } else if (rep.length > rep6.length) {
+            }
+            if (rep.length > rep6.length) {
               rep6 = rep;
-            } else if (rep.length > rep7.length) {
+            }
+            if (rep.length > rep7.length) {
               rep7 = rep;
             }
             if (
