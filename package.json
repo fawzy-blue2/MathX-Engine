@@ -1,6 +1,6 @@
 {
   "name": "@fawzy-blue2/mathix-engine",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "A JavaScript mathematical engine library",
   "type": "module",
   "main": "./dist/mathix.umd.cjs",
