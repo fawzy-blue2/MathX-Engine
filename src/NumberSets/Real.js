@@ -62,11 +62,6 @@ export default class Real extends Rational {
       return Real.toFraction(number);
     }
 
-    const abs = Math.abs(number);
-    if (abs > 0 && abs < 1 && !Number.isInteger(number)) {
-      return `${number.toFixed(5)}`;
-    }
-
     let keys = ["e", "pi"];
     let term;
 
@@ -78,13 +73,14 @@ export default class Real extends Rational {
     }
     if (term !== undefined) {
       return term;
-    } else {
-      if (Real.#termRoot(number) !== undefined) {
-        return Real.#termRoot(number);
-      } else {
-        return `${number.toFixed(5)}`;
-      }
     }
+
+    const rootTerm = Real.#termRoot(number);
+    if (rootTerm !== undefined) {
+      return rootTerm;
+    }
+
+    return `${number.toFixed(5)}`;
   }
   static #termRoot(number) {
     let value;

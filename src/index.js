@@ -1,3 +1,5 @@
+import Real from "./NumberSets/Real.js";
+
 // Number Sets
 export { default as Integer } from "./NumberSets/Integer.js";
 export { default as Rational } from "./NumberSets/Rational.js";
@@ -14,3 +16,6 @@ export { default as Symbols } from "./Utils/Symbols.js";
 export { default as Analyzers} from "./Utils/Analyzers.js";
 export { default as Fixers } from "./Utils/FixErrors.js";
 export { default as Validators } from "./Utils/Validators.js";
+
+let num = Math.sqrt(3) / 2
+console.log(Real.checkTerm(num))
