@@ -109,7 +109,7 @@ export default class Rational extends Integer {
         }
       } else {
         let pow = decimals.length;
-        let numer = +decimals;
+        let numer = val < 0 ? -decimals : +decimals;
         let denom = 10 ** pow;
         let gcf = Rational.gcf(numer, denom);
         return `${numer / gcf}/${denom / gcf}`;

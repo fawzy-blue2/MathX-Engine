@@ -96,7 +96,6 @@ export default class Real extends Rational {
       for (; i <= 11; i++) {
         no = number
         no = fixAproxError(no ** i);
-        console.log(no)
         if (Rational.isRational(no) || (no > -0.001 && no < 0.001)) {
           break;
         }
@@ -154,6 +153,7 @@ export default class Real extends Rational {
         outD *= denom;
         numer *= denom;
         denom = 1;
+        outN = number < 0 ? -outN : outN;
         function outNum() {
           if (outD === 1 && outN === 1) {
             return "";
