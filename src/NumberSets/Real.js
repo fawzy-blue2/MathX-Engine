@@ -33,7 +33,7 @@ export default class Real extends Rational {
         }
         i++;
         no /= constant;
-        no = +no.toFixed(12);
+        no = +no.toFixed(13);
       }
       if (!Rational.isRational(no)) {
         return undefined;
@@ -94,7 +94,9 @@ export default class Real extends Rational {
       let no = number;
       let i = 1;
       for (; i <= 11; i++) {
+        no = number
         no = fixAproxError(no ** i);
+        console.log(no)
         if (Rational.isRational(no) || (no > -0.001 && no < 0.001)) {
           break;
         }
